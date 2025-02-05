@@ -39,12 +39,20 @@ def init_grid():
         grid_cells.append(grid_row)
 
 
+def init_matrix():
+    for i in range(GRID_LEN):
+        matrix.append([0] * GRID_LEN)
 
-def main()
+
+def add_tho():
+    a = random.randint(0, len(matrix) - 1)
+    b = random.randint(0, len(matrix) - 1)
+
+
+def main():
     init_grid()
     mainloop()
-if __name__ == "__main__"
+
+
+if __name__ == "__main__":
     main()
-
-
-
