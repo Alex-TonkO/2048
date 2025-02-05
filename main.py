@@ -38,7 +38,13 @@ def init_grid():
             grid_row.append(t)
         grid_cells.append(grid_row)
 
+
+
+def main()
+    init_grid()
     mainloop()
+if __name__ == "__main__"
+    main()
 
 
-init_grid()
+
