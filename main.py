@@ -62,6 +62,10 @@ def update_grid_cells():
                                            fg=CELL_COLOR_DICT[matrix[i][j]])
 
 
+def cover_up(mat):
+    pass
+
+
 def main():
     init_grid()
     init_matrix()
