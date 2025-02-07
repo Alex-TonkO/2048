@@ -30,10 +30,11 @@ def init_grid():
     for i in range(GRID_LEN):
         grid_row = []
         for j in range(GRID_LEN):
-            cell = Frame(background, bg=BACKGROUND_COLOR_CELL_EMPTY, width=SIZE / GRID_LEN, height=SIZE / GRID_LEN)
+            cell = Frame(background, bg=BACKGROUND_COLOR_CELL_EMPTY,
+                         width=SIZE / GRID_LEN, height=SIZE / GRID_LEN)
             cell.grid(row=i, column=j, padx=GRID_PADDING, pady=GRID_PADDING)
-            t = Label(master=cell, text="", bg=BACKGROUND_COLOR_CELL_EMPTY, justify=CENTER, font=FONT, width=5,
-                      height=2)
+            t = Label(master=cell, text="", bg=BACKGROUND_COLOR_CELL_EMPTY,
+                      justify=CENTER, font=FONT, width=5, height=2)
             t.grid()
             grid_row.append(t)
         grid_cells.append(grid_row)
@@ -44,13 +45,28 @@ def init_matrix():
         matrix.append([0] * GRID_LEN)
 
 
-def add_tho():
+def add_two():
     a = random.randint(0, len(matrix) - 1)
     b = random.randint(0, len(matrix) - 1)
 
 
+def update_grid_cells():
+    for i in range(GRID_LEN):
+        for j in range(GRID_LEN):
+            if matrix[i][j] == 0:
+                grid_cells[i][j].configure(text="",
+                                           bg=BACKGROUND_COLOR_CELL_EMPTY)
+            else:
+                grid_cells[i][j].configure(text=str(matrix[i][j]),
+                                           bg=BACKGROUND_COLOR_DICT[matrix[i][j]],
+                                           fg=CELL_COLOR_DICT[matrix[i][j]])
+
+
 def main():
     init_grid()
+    init_matrix()
+    print(matrix)
+    update_grid_cells()
     mainloop()
 
 
