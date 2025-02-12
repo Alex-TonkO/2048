@@ -48,14 +48,14 @@ def init_matrix():
 def add_two():
     a = random.randint(0, len(matrix) - 1)
     b = random.randint(0, len(matrix) - 1)
+    # hw
 
 
 def update_grid_cells():
     for i in range(GRID_LEN):
         for j in range(GRID_LEN):
             if matrix[i][j] == 0:
-                grid_cells[i][j].configure(text="",
-                                           bg=BACKGROUND_COLOR_CELL_EMPTY)
+                grid_cells[i][j].configure(text="", bg=BACKGROUND_COLOR_CELL_EMPTY)
             else:
                 grid_cells[i][j].configure(text=str(matrix[i][j]),
                                            bg=BACKGROUND_COLOR_DICT[matrix[i][j]],
@@ -74,17 +74,18 @@ def cover_up(mat):
                 new[i][count] = mat[i][j]
                 if count != 0:
                     done = True
-                    count += 1
+                count += 1
     return (new, done)
 
 
 def merge(mat):
     done = False
     for i in range(len(mat)):
-        for j in range(len(mat)):
+        for j in range(len(mat) - 1):
             if mat[i][j] == mat[i][j + 1] and mat[i][j] != 0:
                 mat[i][j] *= 2
                 mat[i][j + 1] = 0
+                done = True
     return (mat, done)
 
 
@@ -103,11 +104,67 @@ def reverse(mat):
     for i in range(len(mat)):
         new.append([])
         for j in range(len(mat[0])):
-            new[i].append(mat[i][len(mat[0] - j - 1)])
+            new[i].append(mat[i][len(mat[0]) - j - 1])
     return new
 
 
+def tramspose(mat):
+    new = []
+    for i in range(len(mat[0])):
+        new.append([])
+        for j in range(len(mat)):
+            new[i].append(mat[j][i])
+    return new
+
+
+def right():
+    global matrix
+    matrix = reverse(matrix)
+    matrix, done = cover_up(matrix)
+    temp = merge(matrix)
+    matrix = temp[0]
+    done = done or temp[1]
+    matrix = cover_up(matrix)[0]
+    matrix = reverse(matrix)
+    return done
+
+
+def up():
+    global matrix
+    matrix = tramspose(matrix)
+    matrix, done = cover_up(matrix)
+    temp = merge(matrix)
+    matrix = temp[0]
+    done = done or temp[1]
+    matrix = cover_up(matrix)[0]
+    matrix = tramspose(matrix)
+    return done
+
+
+def down():
+    global matrix
+    matrix = reverse(tramspose(matrix))
+    matrix, done = cover_up(matrix)
+    temp = merge(matrix)
+    matrix = temp[0]
+    done = done or temp[1]
+    matrix = cover_up(matrix)[0]
+    matrix = reverse(tramspose(matrix))
+    return done
+
+
+def key_down(even):
+    key = repr(even.cher)
+    if key in mainframe.commands:
+        done = mainframe.commands[repr(even.char)]()
+
+
+def game_stat():
+    pass
 def main():
+    mainframe.master.title("2048")
+    mainframe.master.bind("<key>", key_down)
+    mainframe.commands = {KEY_UP: up, KEY_DOWN: down, KEY_LEFT: left, KEY_RIGHT: right()}
     init_grid()
     init_matrix()
     print(matrix)
