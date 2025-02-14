@@ -43,12 +43,17 @@ def init_grid():
 def init_matrix():
     for i in range(GRID_LEN):
         matrix.append([0] * GRID_LEN)
+    add_two()
+    add_two()
 
 
 def add_two():
     a = random.randint(0, len(matrix) - 1)
     b = random.randint(0, len(matrix) - 1)
-    # hw
+    while matrix[a][b] != 0:
+        a = random.randint(0, len(matrix) - 1)
+        b = random.randint(0, len(matrix) - 1)
+    matrix[a][b] = 2
 
 
 def update_grid_cells():
@@ -155,15 +160,33 @@ def down():
 
 def key_down(even):
     key = repr(even.char)
-    if key in mainframe.commands:
-        done = mainframe.commands[repr(even.char)]()
+    if key[1] in mainframe.commands:
+        done = mainframe.commands[repr(even.char)[1]]
         if done:
             add_two()
             update_grid_cells()
 
 
-def game_stat():
-    pass
+def game_state():
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if matrix[i][j] == 2048:
+                return 'win'
+    for i in range(len(matrix) - 1):
+        for j in range(len(matrix[0]) - 1):
+            if matrix[i][j] == matrix[i + 1][j] or matrix[i][j + 1] == matrix[i][j]:
+                return 'not over'
+    for i in range(len(matrix)):
+        for j in range(len(matrix[0])):
+            if matrix[i][j] == 0:
+                return 'not over'
+    for k in range(len(matrix) - 1):
+        if matrix[len(matrix) - 1][k] == matrix[len(matrix) - 1][k + 1]:
+            return 'not over'
+    for j in range(len(matrix) - 1):
+        if matrix[j][len(matrix) - 1] == matrix[j + 1][len(matrix) - 1]:
+            return 'not over'
+    return 'lose'
 
 
 def main():
