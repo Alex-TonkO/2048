@@ -108,7 +108,7 @@ def reverse(mat):
     return new
 
 
-def tramspose(mat):
+def transpose(mat):
     new = []
     for i in range(len(mat[0])):
         new.append([])
@@ -131,40 +131,46 @@ def right():
 
 def up():
     global matrix
-    matrix = tramspose(matrix)
+    matrix = transpose(matrix)
     matrix, done = cover_up(matrix)
     temp = merge(matrix)
     matrix = temp[0]
     done = done or temp[1]
     matrix = cover_up(matrix)[0]
-    matrix = tramspose(matrix)
+    matrix = transpose(matrix)
     return done
 
 
 def down():
     global matrix
-    matrix = reverse(tramspose(matrix))
+    matrix = reverse(transpose(matrix))
     matrix, done = cover_up(matrix)
     temp = merge(matrix)
     matrix = temp[0]
     done = done or temp[1]
     matrix = cover_up(matrix)[0]
-    matrix = reverse(tramspose(matrix))
+    matrix = reverse(transpose(matrix))
     return done
 
 
 def key_down(even):
-    key = repr(even.cher)
+    key = repr(even.char)
     if key in mainframe.commands:
         done = mainframe.commands[repr(even.char)]()
+        if done:
+            add_two()
+            update_grid_cells()
 
 
 def game_stat():
     pass
+
+
 def main():
     mainframe.master.title("2048")
-    mainframe.master.bind("<key>", key_down)
-    mainframe.commands = {KEY_UP: up, KEY_DOWN: down, KEY_LEFT: left, KEY_RIGHT: right()}
+    mainframe.master.bind("<Key>", key_down)
+    mainframe.commands = {KEY_UP: up, KEY_DOWN:
+        down, KEY_LEFT: left, KEY_RIGHT: right}
     init_grid()
     init_matrix()
     print(matrix)
